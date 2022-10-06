@@ -10,7 +10,7 @@ const config: MysqlConnectionOptions = {
   username: 'root',
   password: 'password',
   database: 'todoapp',
-  entities: [User, ToDo],
+  entities: ['dist/src/entites/*.entity.ts'],
   synchronize: true,
 };
 
