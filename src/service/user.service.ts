@@ -43,19 +43,32 @@ export class UsersService {
     }
   }
 
-  create(userEntity: User): Promise<User> {
-    userEntity.createdDate = new Date();
-    userEntity.modifiedDate = new Date();
-    return this.usersRepository.save(userEntity);
+  async create(userEntity: User): Promise<User> {
+    try {
+      const userCheck = await this.usersRepository.findOneBy({
+        username: userEntity.username,
+      });
+      if (userCheck)
+        throw new HttpException(
+          `Username ${userEntity.username} has been exist`,
+          HttpStatus.BAD_REQUEST,
+        );
+      else {
+        userEntity.createdDate = new Date();
+        userEntity.modifiedDate = new Date();
+        return this.usersRepository.save(userEntity);
+      }
+    } catch (error) {
+      throw new HttpException(
+        `Username ${userEntity.username} has been exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  async update(userDTO: UserDTO): Promise<User> {
-    const id = String(userDTO.id);
-    const userUpdate = await this.findOne(id);
-    userUpdate.name = userDTO.name;
-    userUpdate.username = userDTO.username;
-    userUpdate.isActive = userDTO.isActive;
-    userUpdate.createdDate = userDTO.createdDate;
+  async update(user: User): Promise<User> {
+    let userUpdate = await this.usersRepository.findOneBy({ id: user.id });
+    userUpdate = { ...user };
     userUpdate.modifiedDate = new Date();
     return this.usersRepository.save(userUpdate);
   }

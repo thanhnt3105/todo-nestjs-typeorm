@@ -27,8 +27,8 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUser(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOne(id);
+  async getUser(@Param('id') id: string): Promise<UserDTO> {
+    return UserEntityToDTO(await this.usersService.findOne(id));
   }
 
   @Post()
@@ -38,8 +38,8 @@ export class UserController {
     );
   }
   @Put()
-  async updateUser(@Body() userDTO: UserDTO): Promise<UserDTO> {
-    return UserEntityToDTO(await this.usersService.update(userDTO));
+  async updateUser(@Body() user: User): Promise<UserDTO> {
+    return UserEntityToDTO(await this.usersService.update(user));
   }
 
   @Delete(':id')
