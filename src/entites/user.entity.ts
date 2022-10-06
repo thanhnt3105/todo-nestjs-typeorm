@@ -5,7 +5,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'username', length: 50 })
+  @Column({ name: 'username', length: 50, unique: true })
   username: string;
 
   @Column({ name: 'password', length: 30 })
@@ -17,9 +17,9 @@ export class User {
   @Column({ default: true, name: 'is_active' })
   isActive: boolean;
 
-  @Column({ name: 'created_date', nullable: true })
+  @Column({ name: 'created_date' })
   createdDate: Date;
 
-  @Column({ name: 'modified_date', nullable: true })
+  @Column({ name: 'modified_date' })
   modifiedDate: Date;
 }

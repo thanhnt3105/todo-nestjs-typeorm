@@ -1,7 +1,7 @@
 class UserRequest {
-  name: string;
-  username: string;
-  password: string;
+  public name: string;
+  public username: string;
+  public password: string;
 }
 
 export default UserRequest;
