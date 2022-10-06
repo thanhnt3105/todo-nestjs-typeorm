@@ -12,30 +12,20 @@ export class UsersService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    try {
-      const users: User[] = await this.usersRepository.find();
-      if (users.length != 0) {
-        return users;
-      } else {
-        throw new HttpException(`User empty!`, HttpStatus.NOT_FOUND);
-      }
-    } catch (error) {
+    const users: User[] = await this.usersRepository.find();
+    if (users.length != 0) {
+      return users;
+    } else {
       throw new HttpException(`User empty!`, HttpStatus.NOT_FOUND);
     }
   }
 
   async findOne(id: string): Promise<User> {
-    try {
-      const user = await this.usersRepository.findOneByOrFail({ id: +id });
-      if (user) {
-        return user;
-      } else {
-        throw new HttpException(
-          `Cannot find user with id ${id}`,
-          HttpStatus.NOT_FOUND,
-        );
-      }
-    } catch (error) {
+    const user = await this.usersRepository.findOneBy({ id: +id });
+    if (user) {
+      return user;
+    }
+    else{
       throw new HttpException(
         `Cannot find user with id ${id}`,
         HttpStatus.NOT_FOUND,
@@ -44,21 +34,15 @@ export class UsersService {
   }
 
   async create(userEntity: User): Promise<User> {
-    try {
-      const userCheck = await this.usersRepository.findOneBy({
-        username: userEntity.username,
-      });
-      if (userCheck)
-        throw new HttpException(
-          `Username ${userEntity.username} has been exist`,
-          HttpStatus.BAD_REQUEST,
-        );
-      else {
-        userEntity.createdDate = new Date();
-        userEntity.modifiedDate = new Date();
-        return this.usersRepository.save(userEntity);
-      }
-    } catch (error) {
+    const userCheck = await this.usersRepository.findOneBy({
+      username: userEntity.username,
+    });
+
+    if (!userCheck) {
+      userEntity.createdDate = new Date();
+      userEntity.modifiedDate = new Date();
+      return this.usersRepository.save(userEntity);
+    } else {
       throw new HttpException(
         `Username ${userEntity.username} has been exist`,
         HttpStatus.BAD_REQUEST,
@@ -68,9 +52,29 @@ export class UsersService {
 
   async update(user: User): Promise<User> {
     let userUpdate = await this.usersRepository.findOneBy({ id: user.id });
-    userUpdate = { ...user };
-    userUpdate.modifiedDate = new Date();
-    return this.usersRepository.save(userUpdate);
+
+    if (userUpdate) { //found
+      userUpdate = { ...user };
+      userUpdate.modifiedDate = new Date();
+
+      const userch = await this.usersRepository.findOneBy({username:userUpdate.username});
+      if(!userch){
+        return this.usersRepository.save(userUpdate);
+      }
+      else{
+        console.log("xuas hien usercu roi dmm");
+        
+        throw new HttpException(
+          `Username ${userUpdate.username} has been exist`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else {
+      throw new HttpException(
+        `Cannot find user withhhh id ${user.id}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async delete(id: string): Promise<void> {
