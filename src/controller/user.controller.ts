@@ -8,7 +8,6 @@ import {
   Put,
 } from '@nestjs/common';
 import UserDTO from 'src/dto/user.dto';
-import { UserEntity } from 'src/entites/user.entity';
 import {
   UserEntityToDTO,
   UserEntitiesToDTOs,

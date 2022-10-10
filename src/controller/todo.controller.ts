@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { TodoDTO } from 'src/dto/todo.dto';
 import { ToDoEntity } from 'src/entites/todo.entity';
 import {
@@ -28,9 +28,24 @@ export class TodoController {
   }
 
   @Post()
-  async createTask(@Body() taskRequest: TodoRequest): Promise<ToDoEntity> {
-    return await this.todoService.createTask(
-      await this.todoMapper.TodoRequestToEntity(taskRequest),
+  async createTask(@Body() taskRequest: TodoRequest): Promise<TodoDTO> {
+    return TodoEntityToDTO(
+      await this.todoService.createTask(
+        await this.todoMapper.TodoRequestToEntity(taskRequest),
+      ),
+    );
+  }
+
+  @Put(':id')
+  async updateTask(
+    @Param('id') id: string,
+    @Body() taskRequest: TodoRequest,
+  ): Promise<TodoDTO> {
+    return TodoEntityToDTO(
+      await this.todoService.updateTask(
+        id,
+        await this.todoMapper.TodoRequestToEntity(taskRequest),
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ export class TodoRequestMapper {
       where: { id: todoRequest.createdById },
     });
     todo.createdBy = task;
+    todo.status = todoRequest.status;
     return todo;
   }
 }

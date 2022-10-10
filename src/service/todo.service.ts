@@ -43,6 +43,26 @@ export class TodoService {
     console.log('todoEntity', todoEntity);
     todoEntity.createdDate = new Date();
     todoEntity.modifiedDate = new Date();
-    return this.todoRepository.save(todoEntity);
+    try {
+      return this.todoRepository.save(todoEntity);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateTask(id: string, todo: ToDoEntity): Promise<ToDoEntity> {
+    const task = await this.todoRepository.findOne({
+      where: { id: +id },
+      relations: { createdBy: true },
+    });
+    task.status = todo.status;
+    task.taskName = todo.taskName;
+    task.createdBy = todo.createdBy;
+    console.log('task', task);
+    try {
+      return this.todoRepository.save(task);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

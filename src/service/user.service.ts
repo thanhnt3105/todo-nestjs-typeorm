@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/entites/user.entity';
-import UserRequest from 'src/request/user.request';
 
 @Injectable()
 export class UsersService {
