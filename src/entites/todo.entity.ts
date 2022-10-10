@@ -1,18 +1,26 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
+import { UserEntity } from './user.entity';
 
 @Entity('todo')
-export class ToDo {
+export class ToDoEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'task_name', length: 255 })
   taskName: string;
 
-  @Column({ name: 'status' })
+  @Column({ name: 'status', default: 1 })
   status: number;
 
-  // @Column({ name: 'name', length: 100 })
-  // file: string;
+  @ManyToOne(() => UserEntity, (user) => user.todos, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  createdBy: UserEntity;
 
   @Column({ name: 'created_date' })
   createdDate: Date;

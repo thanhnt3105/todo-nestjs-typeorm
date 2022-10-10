@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { ToDoEntity } from './todo.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -16,6 +17,9 @@ export class UserEntity {
 
   @Column({ name: 'password', length: 30 })
   password: string;
+
+  @OneToMany(() => ToDoEntity, (todo) => todo.createdBy)
+  todos: ToDoEntity[];
 
   @Column({ default: true, name: 'is_active' })
   isActive: boolean;
