@@ -37,9 +37,12 @@ export class UserController {
       await this.usersService.createUser(UserRequestToEntity(userRequest)),
     );
   }
-  @Put()
-  async updateUser(@Body() user: UserEntity): Promise<UserDTO> {
-    return UserEntityToDTO(await this.usersService.updateUser(user));
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body() userRequest: UserRequest,
+  ): Promise<UserDTO> {
+    return UserEntityToDTO(await this.usersService.updateUser(id, userRequest));
   }
 
   @Delete(':id')

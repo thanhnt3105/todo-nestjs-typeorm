@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/entites/user.entity';
+import UserRequest from 'src/request/user.request';
 
 @Injectable()
 export class UsersService {
@@ -48,13 +49,11 @@ export class UsersService {
     }
   }
 
-  async updateUser(user: UserEntity): Promise<UserEntity> {
-    //user: request
+  async updateUser(id: string, user: UserRequest): Promise<UserEntity> {
     const userUpdate: UserEntity = await this.usersRepository.findOneBy({
-      id: user.id,
+      id: +id,
     });
     if (userUpdate) {
-      //found
       const userChoose = {
         ...userUpdate,
         ...user,
@@ -64,7 +63,7 @@ export class UsersService {
       const userch = await this.usersRepository.findOneBy({
         username: userChoose.username,
       });
-      if (userch && userch.id != user.id) {
+      if (userch && userch.id != +id) {
         throw new HttpException(
           `Username ${userChoose.username} has been exist`,
           HttpStatus.BAD_REQUEST,
@@ -74,7 +73,7 @@ export class UsersService {
       }
     } else {
       throw new HttpException(
-        `Cannot find user withhhh id ${user.id}`,
+        `Cannot find user withhhh id ${id}`,
         HttpStatus.BAD_REQUEST,
       );
     }
