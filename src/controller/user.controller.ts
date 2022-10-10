@@ -42,7 +42,9 @@ export class UserController {
     @Param('id') id: string,
     @Body() userRequest: UserRequest,
   ): Promise<UserDTO> {
-    return UserEntityToDTO(await this.usersService.updateUser(id, userRequest));
+    return UserEntityToDTO(
+      await this.usersService.updateUser(id, UserRequestToEntity(userRequest)),
+    );
   }
 
   @Delete(':id')

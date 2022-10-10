@@ -49,7 +49,7 @@ export class UsersService {
     }
   }
 
-  async updateUser(id: string, user: UserRequest): Promise<UserEntity> {
+  async updateUser(id: string, user: UserEntity): Promise<UserEntity> {
     const userUpdate: UserEntity = await this.usersRepository.findOneBy({
       id: +id,
     });
