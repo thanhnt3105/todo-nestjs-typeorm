@@ -1,5 +1,5 @@
-import { ToDo } from 'src/entites/todo.entity';
-import { User } from 'src/entites/user.entity';
+import { ToDoEntity } from 'src/entites/todo.entity';
+import { UserEntity } from 'src/entites/user.entity';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 const config: MysqlConnectionOptions = {
@@ -9,7 +9,7 @@ const config: MysqlConnectionOptions = {
   username: 'root',
   password: 'password',
   database: 'todoapp',
-  entities: [User,ToDo],
+  entities: [UserEntity, ToDoEntity],
   synchronize: true,
 };
 

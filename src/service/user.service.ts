@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/entites/user.entity';
+import { UserEntity } from 'src/entites/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async findAllUser(): Promise<User[]> {
-    const users: User[] = await this.usersRepository.find();
+  async findAllUser(): Promise<UserEntity[]> {
+    const users: UserEntity[] = await this.usersRepository.find();
     if (users.length != 0) {
       return users;
     } else {
@@ -19,7 +19,7 @@ export class UsersService {
     }
   }
 
-  async findOneUser(id: string): Promise<User> {
+  async findOneUser(id: string): Promise<UserEntity> {
     const user = await this.usersRepository.findOneBy({ id: +id });
     if (user) {
       return user;
@@ -31,7 +31,7 @@ export class UsersService {
     }
   }
 
-  async createUser(userEntity: User): Promise<User> {
+  async createUser(userEntity: UserEntity): Promise<UserEntity> {
     const userCheck = await this.usersRepository.findOneBy({
       username: userEntity.username,
     });
@@ -48,9 +48,9 @@ export class UsersService {
     }
   }
 
-  async updateUser(user: User): Promise<User> {
+  async updateUser(user: UserEntity): Promise<UserEntity> {
     //user: request
-    const userUpdate: User = await this.usersRepository.findOneBy({
+    const userUpdate: UserEntity = await this.usersRepository.findOneBy({
       id: user.id,
     });
     if (userUpdate) {
@@ -64,13 +64,13 @@ export class UsersService {
       const userch = await this.usersRepository.findOneBy({
         username: userChoose.username,
       });
-      if (!userch) {
-        return this.usersRepository.save(userChoose);
-      } else {
+      if (userch && userch.id != user.id) {
         throw new HttpException(
           `Username ${userChoose.username} has been exist`,
           HttpStatus.BAD_REQUEST,
         );
+      } else {
+        return this.usersRepository.save(userChoose);
       }
     } else {
       throw new HttpException(

@@ -1,8 +1,8 @@
-import { User } from 'src/entites/user.entity';
+import { UserEntity } from 'src/entites/user.entity';
 import UserRequest from 'src/request/user.request';
 
-function UserRequestToEntity(userRequest: UserRequest): User {
-  const user = new User();
+function UserRequestToEntity(userRequest: UserRequest): UserEntity {
+  const user = new UserEntity();
   user.name = userRequest.name;
   user.username = userRequest.username;
   user.password = userRequest.password;

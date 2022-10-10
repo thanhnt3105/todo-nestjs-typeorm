@@ -1,7 +1,7 @@
 import UserDTO from 'src/dto/user.dto';
-import { User } from 'src/entites/user.entity';
+import { UserEntity } from 'src/entites/user.entity';
 
-export function UserEntityToDTO(user: User): UserDTO {
+export function UserEntityToDTO(user: UserEntity): UserDTO {
   const userDTO = new UserDTO();
   userDTO.id = user.id;
   userDTO.name = user.name;
@@ -13,6 +13,6 @@ export function UserEntityToDTO(user: User): UserDTO {
   return userDTO;
 }
 
-export function UserEntitiesToDTOs(users: User[]): UserDTO[] {
+export function UserEntitiesToDTOs(users: UserEntity[]): UserDTO[] {
   return users.map((user) => UserEntityToDTO(user));
 }

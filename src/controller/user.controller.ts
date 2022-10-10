@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import UserDTO from 'src/dto/user.dto';
-import { User } from 'src/entites/user.entity';
+import { UserEntity } from 'src/entites/user.entity';
 import {
   UserEntityToDTO,
   UserEntitiesToDTOs,
@@ -38,7 +38,7 @@ export class UserController {
     );
   }
   @Put()
-  async updateUser(@Body() user: User): Promise<UserDTO> {
+  async updateUser(@Body() user: UserEntity): Promise<UserDTO> {
     return UserEntityToDTO(await this.usersService.updateUser(user));
   }
 

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ToDo } from 'src/entites/todo.entity';
+import { ToDoEntity } from 'src/entites/todo.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ToDo])],
+  imports: [TypeOrmModule.forFeature([ToDoEntity])],
   providers: [],
   controllers: [],
 })
