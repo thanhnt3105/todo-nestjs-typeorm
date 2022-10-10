@@ -23,27 +23,27 @@ export class UserController {
 
   @Get()
   async getAllUser(): Promise<UserDTO[]> {
-    return UserEntitiesToDTOs(await this.usersService.findAll());
+    return UserEntitiesToDTOs(await this.usersService.findAllUser());
   }
 
   @Get(':id')
   async getUser(@Param('id') id: string): Promise<UserDTO> {
-    return UserEntityToDTO(await this.usersService.findOne(id));
+    return UserEntityToDTO(await this.usersService.findOneUser(id));
   }
 
   @Post()
   async createUser(@Body() userRequest: UserRequest): Promise<UserDTO> {
     return UserEntityToDTO(
-      await this.usersService.create(UserRequestToEntity(userRequest)),
+      await this.usersService.createUser(UserRequestToEntity(userRequest)),
     );
   }
   @Put()
   async updateUser(@Body() user: User): Promise<UserDTO> {
-    return UserEntityToDTO(await this.usersService.update(user));
+    return UserEntityToDTO(await this.usersService.updateUser(user));
   }
 
   @Delete(':id')
   async deleteUser(@Param('id') id: string): Promise<void> {
-    return await this.usersService.delete(id);
+    return await this.usersService.deleteUser(id);
   }
 }

@@ -6,6 +6,7 @@ function UserRequestToEntity(userRequest: UserRequest): User {
   user.name = userRequest.name;
   user.username = userRequest.username;
   user.password = userRequest.password;
+  user.role = userRequest.role;
   return user;
 }
 

@@ -5,14 +5,17 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'name', length: 100 })
+  name: string;
+
+  @Column({ name: 'role', length: 50 })
+  role: string;
+
   @Column({ name: 'username', length: 50, unique: true })
   username: string;
 
   @Column({ name: 'password', length: 30 })
   password: string;
-
-  @Column({ name: 'name', length: 100 })
-  name: string;
 
   @Column({ default: true, name: 'is_active' })
   isActive: boolean;

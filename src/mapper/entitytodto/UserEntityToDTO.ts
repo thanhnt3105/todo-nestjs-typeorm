@@ -9,6 +9,7 @@ export function UserEntityToDTO(user: User): UserDTO {
   userDTO.isActive = user.isActive;
   userDTO.createdDate = user.createdDate;
   userDTO.modifiedDate = user.modifiedDate;
+  userDTO.role = user.role;
   return userDTO;
 }
 

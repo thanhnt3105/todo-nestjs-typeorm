@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/entites/user.entity';
-import UserDTO from 'src/dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +10,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async findAll(): Promise<User[]> {
+  async findAllUser(): Promise<User[]> {
     const users: User[] = await this.usersRepository.find();
     if (users.length != 0) {
       return users;
@@ -20,12 +19,11 @@ export class UsersService {
     }
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOneUser(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id: +id });
     if (user) {
       return user;
-    }
-    else{
+    } else {
       throw new HttpException(
         `Cannot find user with id ${id}`,
         HttpStatus.NOT_FOUND,
@@ -33,7 +31,7 @@ export class UsersService {
     }
   }
 
-  async create(userEntity: User): Promise<User> {
+  async createUser(userEntity: User): Promise<User> {
     const userCheck = await this.usersRepository.findOneBy({
       username: userEntity.username,
     });
@@ -50,22 +48,27 @@ export class UsersService {
     }
   }
 
-  async update(user: User): Promise<User> {
-    let userUpdate = await this.usersRepository.findOneBy({ id: user.id });
+  async updateUser(user: User): Promise<User> {
+    //user: request
+    const userUpdate: User = await this.usersRepository.findOneBy({
+      id: user.id,
+    });
+    if (userUpdate) {
+      //found
+      const userChoose = {
+        ...userUpdate,
+        ...user,
+      };
+      userChoose.modifiedDate = new Date();
 
-    if (userUpdate) { //found
-      userUpdate = { ...user };
-      userUpdate.modifiedDate = new Date();
-
-      const userch = await this.usersRepository.findOneBy({username:userUpdate.username});
-      if(!userch){
-        return this.usersRepository.save(userUpdate);
-      }
-      else{
-        console.log("xuas hien usercu roi dmm");
-        
+      const userch = await this.usersRepository.findOneBy({
+        username: userChoose.username,
+      });
+      if (!userch) {
+        return this.usersRepository.save(userChoose);
+      } else {
         throw new HttpException(
-          `Username ${userUpdate.username} has been exist`,
+          `Username ${userChoose.username} has been exist`,
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -77,7 +80,7 @@ export class UsersService {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<void> {
     try {
       await this.usersRepository.delete(id);
     } catch (error) {
