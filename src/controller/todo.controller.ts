@@ -1,6 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TodoDTO } from 'src/dto/todo.dto';
-import { ToDoEntity } from 'src/entites/todo.entity';
 import {
   TodoEntityToDTO,
   TodoEntityToDTOs,
@@ -47,5 +54,10 @@ export class TodoController {
         await this.todoMapper.TodoRequestToEntity(taskRequest),
       ),
     );
+  }
+
+  @Delete(':id')
+  async deleteTask(@Param('id') id: string): Promise<void> {
+    return this.todoService.deleteTask(id);
   }
 }

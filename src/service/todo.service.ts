@@ -65,4 +65,15 @@ export class TodoService {
       console.log(error);
     }
   }
+
+  async deleteTask(id: string): Promise<void> {
+    try {
+      await this.todoRepository.delete(id);
+    } catch (error) {
+      throw new HttpException(
+        `Cannot find user with id ${id}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 }
