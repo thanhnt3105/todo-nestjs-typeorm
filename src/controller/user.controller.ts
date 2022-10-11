@@ -50,4 +50,9 @@ export class UserController {
   async deleteUser(@Param('id') id: string): Promise<void> {
     return await this.usersService.deleteUser(id);
   }
+
+  // @Get(':id/all')
+  // async getAllTask(@Param('id') id: string): Promise<TodoDTO[]> {
+  //   return TodoEntityToDTOs(await this.usersService.getAllTask(id));
+  // }
 }

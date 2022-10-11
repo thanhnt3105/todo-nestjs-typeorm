@@ -1,13 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/entites/user.entity';
+import { ToDoEntity } from 'src/entites/todo.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    @InjectRepository(ToDoEntity)
+    private todoRepository: Repository<ToDoEntity>,
   ) {}
 
   async findAllUser(): Promise<UserEntity[]> {
@@ -32,6 +36,10 @@ export class UsersService {
   }
 
   async createUser(userEntity: UserEntity): Promise<UserEntity> {
+    const saltOrRounds = 10;
+    const pass = userEntity.password;
+    const hash = await bcrypt.hash(pass, saltOrRounds);
+
     const userCheck = await this.usersRepository.findOneBy({
       username: userEntity.username,
     });
@@ -39,6 +47,7 @@ export class UsersService {
     if (!userCheck) {
       userEntity.createdDate = new Date();
       userEntity.modifiedDate = new Date();
+      userEntity.password = hash;
       return this.usersRepository.save(userEntity);
     } else {
       throw new HttpException(
@@ -88,4 +97,8 @@ export class UsersService {
       );
     }
   }
+
+  // async getAllTask(userId: string): Promise<ToDoEntity[]> {
+  //   return this.todoRepository.find({ where: { createdBy: true } });
+  // }
 }
