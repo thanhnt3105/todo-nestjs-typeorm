@@ -81,7 +81,7 @@ export class TodoService {
   async getMemberAssign(id: string): Promise<ToDoEntity> {
     return this.todoRepository.findOne({
       where: { id: +id },
-      relations: ['memberAssign'],
+      relations: { memberAssign: true, createdBy: true },
     });
   }
 
@@ -97,6 +97,7 @@ export class TodoService {
     // console.log(members);
     const task: ToDoEntity = await this.todoRepository.findOne({
       where: { id: +taskId },
+      relations: { createdBy: true },
     });
     task.memberAssign = members;
     return this.todoRepository.save(task);

@@ -63,15 +63,15 @@ export class TodoController {
   }
 
   @Get('assign/:id')
-  async getMemberAssign(@Param('id') id: string): Promise<ToDoEntity> {
-    return await this.todoService.getMemberAssign(id);
+  async getMemberAssign(@Param('id') id: string): Promise<TodoDTO> {
+    return TodoEntityToDTO(await this.todoService.getMemberAssign(id));
   }
 
   @Post('assign/:id')
   async assignMemberToTask(
     @Param('id') taskId: string,
     @Body() ids: string[],
-  ): Promise<ToDoEntity> {
-    return await this.todoService.assignTask(taskId, ids);
+  ): Promise<TodoDTO> {
+    return TodoEntityToDTO(await this.todoService.assignTask(taskId, ids));
   }
 }
