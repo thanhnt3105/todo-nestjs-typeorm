@@ -62,8 +62,16 @@ export class TodoController {
     return this.todoService.deleteTask(id);
   }
 
-  @Get(':id/assign')
+  @Get('assign/:id')
   async getMemberAssign(@Param('id') id: string): Promise<ToDoEntity> {
     return await this.todoService.getMemberAssign(id);
+  }
+
+  @Post('assign/:id')
+  async assignMemberToTask(
+    @Param('id') taskId: string,
+    @Body() ids: string[],
+  ): Promise<ToDoEntity> {
+    return await this.todoService.assignTask(taskId, ids);
   }
 }

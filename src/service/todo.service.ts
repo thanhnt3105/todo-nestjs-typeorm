@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { async } from 'rxjs';
 import { ToDoEntity } from 'src/entites/todo.entity';
 import { UserEntity } from 'src/entites/user.entity';
 import { Repository } from 'typeorm';
@@ -84,7 +85,20 @@ export class TodoService {
     });
   }
 
-  // async assignTask(ids:Array<number>): Promise<void> {
-
-  // }
+  async assignTask(taskId: string, ids: Array<string>): Promise<ToDoEntity> {
+    const members: UserEntity[] = await Promise.all(
+      ids.map(
+        async (id) =>
+          await this.userRepository.findOne({
+            where: { id: +id },
+          }),
+      ),
+    );
+    // console.log(members);
+    const task: ToDoEntity = await this.todoRepository.findOne({
+      where: { id: +taskId },
+    });
+    task.memberAssign = members;
+    return this.todoRepository.save(task);
+  }
 }
