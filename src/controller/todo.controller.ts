@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { TodoDTO } from 'src/dto/todo.dto';
+import { ToDoEntity } from 'src/entites/todo.entity';
 import {
   TodoEntityToDTO,
   TodoEntityToDTOs,
@@ -59,5 +60,10 @@ export class TodoController {
   @Delete(':id')
   async deleteTask(@Param('id') id: string): Promise<void> {
     return this.todoService.deleteTask(id);
+  }
+
+  @Get(':id/assign')
+  async getMemberAssign(@Param('id') id: string): Promise<ToDoEntity> {
+    return await this.todoService.getMemberAssign(id);
   }
 }

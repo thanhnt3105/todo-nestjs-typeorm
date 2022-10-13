@@ -15,7 +15,7 @@ export class TodoService {
 
   async getAllTasks(): Promise<ToDoEntity[]> {
     const tasks: ToDoEntity[] = await this.todoRepository.find({
-      relations: { createdBy: true },
+      relations: { createdBy: true, memberAssign: true },
     });
     if (tasks.length != 0) return tasks;
     else {
@@ -26,7 +26,7 @@ export class TodoService {
   async getOneTask(id: string): Promise<ToDoEntity> {
     const task: ToDoEntity = await this.todoRepository.findOne({
       where: { id: +id },
-      relations: { createdBy: true },
+      relations: { createdBy: true, memberAssign: true },
     });
 
     if (task) {
@@ -76,4 +76,15 @@ export class TodoService {
       );
     }
   }
+
+  async getMemberAssign(id: string): Promise<ToDoEntity> {
+    return this.todoRepository.findOne({
+      where: { id: +id },
+      relations: ['memberAssign'],
+    });
+  }
+
+  // async assignTask(ids:Array<number>): Promise<void> {
+
+  // }
 }

@@ -15,7 +15,7 @@ export class UserEntity {
   @Column({ name: 'username', length: 50, unique: true })
   username: string;
 
-  @Column({ name: 'password', length: 30 })
+  @Column({ name: 'password', length: 200 })
   password: string;
 
   @OneToMany(() => ToDoEntity, (todo) => todo.createdBy)

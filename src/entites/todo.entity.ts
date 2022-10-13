@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 
@@ -21,6 +23,10 @@ export class ToDoEntity {
   @ManyToOne(() => UserEntity, (user) => user.todos, { onDelete: 'CASCADE' })
   @JoinColumn()
   createdBy: UserEntity;
+
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  memberAssign: UserEntity[];
 
   @Column({ name: 'created_date' })
   createdDate: Date;
